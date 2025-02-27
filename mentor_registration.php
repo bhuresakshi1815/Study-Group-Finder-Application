@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 if (isset($_SESSION["user"])) {
@@ -37,16 +38,14 @@ if (isset($_SESSION["user"])) {
            $contact = $_POST["contact"];
            $course = $_POST["course"];
            $semester = $_POST["semester"];
-           $subject = $_POST["subject"];
            $email = $_POST["email"];
            $password = $_POST["password"];
            $passwordRepeat = $_POST["repeat_password"];
            
            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
            $errors = array();
            
-           if (empty($fullName) OR empty($contact) OR empty($course) OR empty($semester) OR empty($subject) OR empty($email) OR empty($password) OR empty($passwordRepeat)) {
+           if (empty($fullName) OR empty($contact) OR empty($course) OR empty($semester) OR empty($email) OR empty($password) OR empty($passwordRepeat)) {
             array_push($errors,"All fields are required");
            }
            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -71,11 +70,11 @@ if (isset($_SESSION["user"])) {
             }
            }else{
             
-            $sql = "INSERT INTO mentor_details (full_name, contact, course, semester, subject, email, password) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+            $sql = "INSERT INTO mentor_details (full_name, contact, course, semester, email, password) VALUES ( ?, ?, ?, ?, ?, ? )";
             $stmt = mysqli_stmt_init($conn);
             $prepareStmt = mysqli_stmt_prepare($stmt,$sql);
             if ($prepareStmt) {
-                mysqli_stmt_bind_param($stmt,"sssssss",$fullName, $contact, $course, $semester, $subject, $email, $passwordHash);
+                mysqli_stmt_bind_param($stmt,"ssssss",$fullName, $contact, $course, $semester, $email, $passwordHash);
                 mysqli_stmt_execute($stmt);
                 echo "<div class='alert alert-success'>You are registered successfully.</div>";
             }else{
@@ -83,43 +82,49 @@ if (isset($_SESSION["user"])) {
             }
            }
           
-
         }
         ?>
         
         <form action="mentor_registration.php" method="post">
             <div class="form-group">
-                <input type="text" class="form-control" name="fullname" placeholder="Full Name:" required>
+            Full Name: <input type="text" class="form-control" name="fullname" required>
             </div>
             <div class="form-group">
-                <input type="tel" class="form-control" name="contact" placeholder="Enter your WhatsApp number:" required pattern="[0-9]{10}">
+            Enter your WhatsApp number: <input type="tel" class="form-control" name="contact" required pattern="[0-9]{10}">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="course" placeholder="Enter your course:" required>
+            Enter your course: <input type="text" class="form-control" name="course"  required>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="semester" placeholder="Enter your semester:" required>
+            Enter your semester: <input type="text" class="form-control" name="semester" placeholder="">
+            </div>
+            
+            <div class="form-group">
+            Enter Email:<input type="email" class="form-control" name="email" placeholder="" required>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="subject" placeholder="Enter your teaching subject:" required>
+            Enter Password: <input type="password" class="form-control" name="password" placeholder="">
             </div>
             <div class="form-group">
-                <input type="email" class="form-control" name="email" placeholder="Email:" required>
+            Enter Repeat Password:<input type="password" class="form-control" name="repeat_password" placeholder="">
             </div>
-            <div class="form-group">
-                <input type="password" class="form-control" name="password" placeholder="Password:">
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control" name="repeat_password" placeholder="Repeat Password:">
-            </div>
+            <center>
             <div class="form-btn">
-                <input type="submit" class="btn btn-primary" value="Register" name="submit">
+                <input type="submit" class="btn btn-primary w-100" value="Register" name="submit">
             </div>
+            </center>
+           
         </form>
-        <div><p>Already Registered
-            <a href="mentor_login.php"> <button class="btn btn-primary">Login Here</button></a>
-            </p>
+        <br>
+        
+        <center>
+        <div>Already Registered?
+            <br>
+            <a href="mentor_login.php"> <button class="btn btn-primary w-100">Login Here</button></a>
+            
         </div>
+        </center>
+     
        
     </div>
     <footer>

@@ -3,7 +3,7 @@ session_start();
 include 'database.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $mentor_id = $_SESSION['mentor_id']; 
+    $mentor_id = $_POST['mentor_id']; 
     $course_name = $_POST['course_name'];
     $course_description = $_POST['course_description'];
     $demo_file_links = $_POST['demo_file_links'];
